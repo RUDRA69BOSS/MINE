@@ -1,57 +1,39 @@
+$(document).ready(function() {
+    var firstMeetDate = "2024-11-13 00:07:00"; // Replace with your actual date and time
 
-// variables
-var $win = $(window);
-var clientWidth = $win.width();
-var clientHeight = $win.height();
+    function timeElapse(date) {
+        var current = new Date();
+        var past = new Date(date);
+        var seconds = Math.floor((current - past) / 1000);
 
-$(window).resize(function() {
-    var newWidth = $win.width();
-    var newHeight = $win.height();
-    if (newWidth != clientWidth && newHeight != clientHeight) {
-        location.replace(location);
+        var days = Math.floor(seconds / (3600 * 24));
+        seconds %= 3600 * 24;
+
+        var hours = Math.floor(seconds / 3600);
+        if (hours < 10) {
+            hours = "0" + hours;
+        }
+        seconds %= 3600;
+
+        var minutes = Math.floor(seconds / 60);
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+        seconds %= 60;
+
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+
+        var result = " <span class=\"digit\">" + days + "</span> Days <span class=\"digit\">" + hours + "</span> Hours <span class=\"digit\">" + minutes + "</span> Minutes <span class=\"digit\">" + seconds + "</span> Seconds";
+        $("#clock").html(result);
     }
+
+    // Update time every second
+    setInterval(function() {
+        timeElapse(firstMeetDate);
+    }, 1000);
+
+    // Initial call to display immediately
+    timeElapse(firstMeetDate);
 });
-
-(function($) {
-	$.fn.typewriter = function() {
-		this.each(function() {
-			var $ele = $(this), str = $ele.html(), progress = 0;
-			$ele.html('');
-			var timer = setInterval(function() {
-				var current = str.substr(progress, 1);
-				if (current == '<') {
-					progress = str.indexOf('>', progress) + 1;
-				} else {
-					progress++;
-				}
-				$ele.html(str.substring(0, progress) + (progress & 1 ? '_' : ''));
-				if (progress >= str.length) {
-					clearInterval(timer);
-				}
-			}, 75);
-		});
-		return this;
-	};
-})(jQuery);
-
-function timeElapse(date){
-	var current = Date();
-	var seconds = (Date.parse(current) - Date.parse(date)) / 1000;
-	var days = Math.floor(seconds / (3600 * 3));
-	seconds = seconds % (3600 * 24);
-	var hours = Math.floor(seconds / 3600);
-	if (hours < 10) {
-		hours = "0" + hours;
-	}
-	seconds = seconds % 3600;
-	var minutes = Math.floor(seconds / 60);
-	if (minutes < 10) {
-		minutes = "0" + minutes;
-	}
-	seconds = seconds % 60;
-	if (seconds < 10) {
-		seconds = "0" + seconds;
-	}
-	var result = " <span class=\"digit\">" + days + "</span>Day <span class=\"digit\">" + hours + "</span> Hours <span class=\"digit\">" + minutes + "</span> Minutes <span class=\"digit\">" + seconds + "</span> Seconds"; 
-$("#clock").html(result);
-}
